@@ -4,6 +4,43 @@ Instructions for running the autotests from scratch. No programming knowledge ne
 
 ---
 
+## Project structure
+
+The Admin Panel has two big top-level sections: **"Stores and orders"** and **"Stock management"**. Everything in this repo so far covers **Stock management only** — the folders are organized around that split so it stays clear which section a test belongs to as the suite grows.
+
+```
+e2e/
+├── login.spec.ts          ← shared — applies to the whole Admin Panel, not one section
+├── pages/
+│   └── LoginPage.ts        ← shared
+├── auth/                   ← shared — role sessions (Super Admin, Store Manager, ...),
+│                              reusable by tests in any section
+│   ├── superadmin.setup.ts
+│   ├── storemanager.setup.ts
+│   └── configurations-readonly.setup.ts
+│
+├── stock-management/       ← everything under Stock Management
+│   ├── configurations.spec.ts
+│   ├── ingredients.spec.ts
+│   ├── suppliers.spec.ts
+│   ├── api/
+│   │   └── ingredients-bulk-import.spec.ts
+│   └── pages/
+│       ├── ConfigurationsPage.ts
+│       ├── IngredientsPage.ts
+│       └── SuppliersPage.ts
+│
+└── stores-and-orders/      ← (not created yet) will hold Stores and orders tests,
+                               mirroring the same structure once that section is covered
+```
+
+**Rule for adding new tests:**
+- Belongs to a specific Admin Panel section (Stock management, Stores and orders, ...) → goes in `e2e/<section-name>/`, with its own `pages/` (and `api/` if it has API-only tests) inside that folder.
+- Applies across the whole Admin Panel regardless of section (login, shared roles/permissions) → stays at the top level of `e2e/`, not inside a section folder.
+- A new section folder should mirror the same shape as `stock-management/` (`*.spec.ts` at the top, `pages/` for page objects, `api/` for API-only specs).
+
+---
+
 ## What to install (one time)
 
 ### 1. Node.js
@@ -118,10 +155,10 @@ There are 186 automated tests across 5 test files (189 including the 3 login/ses
 | Test file | Run with `playwright test <name>` | Tests | What it covers |
 |------|------|------|--------------|
 | `login.spec.ts` | `login` | 5 | Login page structure, "Forgot password" flow, login with valid credentials |
-| `configurations.spec.ts` | `configurations` | 81 | Stock Management → Configurations: all 4 categories (Ingredient class, Ingredient category, Condiment type, Reason) — list display, sorting, pagination, add/edit/delete, permissions for Super Admin, Store Manager and Read Only roles |
-| `ingredients.spec.ts` | `ingredients` | 25 | Ingredients page: list, add/view/edit, permissions, bulk ingredient upload via .xlsx file |
-| `suppliers.spec.ts` | `suppliers` | 66 | Suppliers page: list, add/view/edit, archive/unarchive, filters & search, ERP warehouses |
-| `api/ingredients-bulk-import.spec.ts` | `bulk-import-api` | 9 | Bulk ingredient import JSON API — positive and negative cases (no browser, no login needed) |
+| `stock-management/configurations.spec.ts` | `configurations` | 81 | Stock Management → Configurations: all 4 categories (Ingredient class, Ingredient category, Condiment type, Reason) — list display, sorting, pagination, add/edit/delete, permissions for Super Admin, Store Manager and Read Only roles |
+| `stock-management/ingredients.spec.ts` | `ingredients` | 25 | Ingredients page: list, add/view/edit, permissions, bulk ingredient upload via .xlsx file |
+| `stock-management/suppliers.spec.ts` | `suppliers` | 66 | Suppliers page: list, add/view/edit, archive/unarchive, filters & search, ERP warehouses |
+| `stock-management/api/ingredients-bulk-import.spec.ts` | `bulk-import-api` | 9 | Bulk ingredient import JSON API — positive and negative cases (no browser, no login needed) |
 
 Example — run only the Suppliers tests:
 ```

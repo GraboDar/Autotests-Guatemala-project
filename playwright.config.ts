@@ -77,22 +77,22 @@ export default defineConfig({
     },
     {
       name: 'configurations',
-      testMatch: /configurations\.spec\.ts/,
+      testMatch: /stock-management\/configurations\.spec\.ts/,
       dependencies: ['setup:superadmin', 'setup:storemanager', 'setup:configurations-readonly'],
     },
     {
       name: 'ingredients',
-      testMatch: /ingredients\.spec\.ts/,
+      testMatch: /stock-management\/ingredients\.spec\.ts/,
       dependencies: ['setup:superadmin', 'setup:storemanager'],
     },
     {
       name: 'suppliers',
-      testMatch: /suppliers\.spec\.ts/,
+      testMatch: /stock-management\/suppliers\.spec\.ts/,
       dependencies: ['setup:superadmin', 'setup:storemanager'],
     },
     {
       name: 'bulk-import-api',
-      testMatch: /api\/ingredients-bulk-import\.spec\.ts/,
+      testMatch: /stock-management\/api\/ingredients-bulk-import\.spec\.ts/,
       // No auth dependencies — uses x-api-key header
     },
   ],
