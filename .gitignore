@@ -1,0 +1,15 @@
+node_modules/
+playwright-report/
+test-results/
+e2e/.auth/
+.env
+
+# Secrets — never commit
+*.pem
+memory/credentials.md
+
+# Local scratch / non-project files
+.DS_Store
+Archive.zip
+setup-cnf-ro.log
+Claude outputs/
